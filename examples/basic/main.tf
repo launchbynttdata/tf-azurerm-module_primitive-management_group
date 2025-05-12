@@ -10,7 +10,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-output "management_group" {
-  description = "The management group object created for the policy"
-  value       = azurerm_management_group.management_group
+module "management_group" {
+  source = "../.."
+
+  name             = var.management_group.name
+  display_name     = var.management_group.display_name
+  subscription_ids = tolist(var.spoke_subscription_ids)
 }

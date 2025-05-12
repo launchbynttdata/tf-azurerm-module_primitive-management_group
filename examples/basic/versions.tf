@@ -10,7 +10,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-output "management_group" {
-  description = "The management group object created for the policy"
-  value       = azurerm_management_group.management_group
+terraform {
+  required_version = "~> 1.0"
+
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.77"
+    }
+  }
 }
