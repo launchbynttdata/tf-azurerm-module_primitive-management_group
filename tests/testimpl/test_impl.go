@@ -13,8 +13,8 @@ import (
 )
 
 func TestComposableComplete(t *testing.T, ctx types.TestContext) {
-	managementGroupName := terraform.Output(t, ctx.TerratestTerraformOptions(), "management_group_name")
-	managementGroupID := terraform.Output(t, ctx.TerratestTerraformOptions(), "management_group_id")
+	managementGroupName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "management_group_name")
+	managementGroupID := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "management_group_id")
 	require.NotEmpty(t, managementGroupName, "management_group_name output must not be empty")
 	require.NotEmpty(t, managementGroupID, "management_group_id output must not be empty")
 
@@ -26,14 +26,14 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 
 	response, err := client.Get(context.Background(), managementGroupName, nil)
 	require.NoError(t, err, "failed to get management group from Azure API")
-	require.NotNil(t, response.ManagementGroup, "management group response must not be nil")
+	require.NotNil(t, response.Name, "management group name must not be nil")
 
-	assert.Equal(t, managementGroupName, *response.ManagementGroup.Name, "management group name must match Terraform output")
-	assert.Equal(t, managementGroupID, *response.ManagementGroup.ID, "management group ID must match Terraform output")
+	assert.Equal(t, managementGroupName, *response.Name, "management group name must match Terraform output")
+	assert.Equal(t, managementGroupID, *response.ID, "management group ID must match Terraform output")
 }
 
 func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
-	managementGroupName := terraform.Output(t, ctx.TerratestTerraformOptions(), "management_group_name")
+	managementGroupName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "management_group_name")
 	require.NotEmpty(t, managementGroupName, "management_group_name output must not be empty")
 
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
@@ -44,6 +44,6 @@ func TestComposableCompleteReadonly(t *testing.T, ctx types.TestContext) {
 
 	response, err := client.Get(context.Background(), managementGroupName, nil)
 	require.NoError(t, err, "failed to get management group from Azure API")
-	require.NotNil(t, response.ManagementGroup, "management group response must not be nil")
-	assert.Equal(t, managementGroupName, *response.ManagementGroup.Name, "management group name must match Terraform output")
+	require.NotNil(t, response.Name, "management group name must not be nil")
+	assert.Equal(t, managementGroupName, *response.Name, "management group name must match Terraform output")
 }
