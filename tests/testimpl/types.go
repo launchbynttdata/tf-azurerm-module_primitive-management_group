@@ -1,4 +1,4 @@
-package common
+package testimpl
 
 import "github.com/launchbynttdata/lcaf-component-terratest/types"
 

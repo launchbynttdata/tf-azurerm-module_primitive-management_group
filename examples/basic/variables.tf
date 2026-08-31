@@ -10,13 +10,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+variable "resource_names_map" {
+  description = "Map of resource names used by tf-launch-module_library-resource_name"
+  type = map(object({
+    name       = string
+    max_length = optional(number, 80)
+  }))
+}
 
-variable "management_group" {
-  type = object({
-    name         = string
-    display_name = string
-  })
-  description = "Management group values"
+variable "logical_product_family" {
+  type        = string
+  description = "Product family for generated resource names"
+  default     = "launch"
+}
+
+variable "logical_product_service" {
+  type        = string
+  description = "Product service for generated resource names"
+  default     = "gotest"
+}
+
+variable "class_env" {
+  type        = string
+  description = "Environment class for generated resource names"
+  default     = "sandbox"
+}
+
+variable "instance_env" {
+  type        = number
+  description = "Instance number for the environment"
+  default     = 0
+}
+
+variable "instance_resource" {
+  type        = number
+  description = "Instance number for the resource"
+  default     = 0
+}
+
+variable "region" {
+  type        = string
+  description = "Azure region token used by the resource naming module"
+  default     = "eastus"
 }
 
 variable "spoke_subscription_ids" {

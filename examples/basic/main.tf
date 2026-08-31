@@ -10,10 +10,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+module "resource_names" {
+  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
+  version = "~> 2.4"
+
+  for_each = var.resource_names_map
+
+  region                  = var.region
+  class_env               = var.class_env
+  cloud_resource_type     = each.value.name
+  instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
+  maximum_length          = each.value.max_length
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+}
+
 module "management_group" {
   source = "../.."
 
-  name             = var.management_group.name
-  display_name     = var.management_group.display_name
+  name             = local.management_group_name
+  display_name     = local.management_group_name
   subscription_ids = tolist(var.spoke_subscription_ids)
 }

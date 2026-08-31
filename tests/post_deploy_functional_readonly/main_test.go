@@ -12,4 +12,25 @@
 
 package test
 
-const ()
+import (
+	"testing"
+
+	"github.com/launchbynttdata/lcaf-component-terratest/lib"
+	"github.com/launchbynttdata/lcaf-component-terratest/types"
+	"github.com/launchbynttdata/tf-azurerm-module_primitive-managment_group/tests/testimpl"
+)
+
+const (
+	testConfigsExamplesFolderDefault = "../../examples/basic"
+	infraTFVarFileNameDefault        = "test.tfvars"
+)
+
+func TestManagementGroupModuleReadonly(t *testing.T) {
+	ctx := types.CreateTestContextBuilder().
+		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
+		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
+		SetTestConfigFileName(infraTFVarFileNameDefault).
+		Build()
+
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableCompleteReadonly)
+}
